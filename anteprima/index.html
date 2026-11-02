@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>RiabilitAL — Anteprima home</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
+<style>
+:root{--verde:#113835;--grigio:#4b6360;--bianco:#ffffff;--banda:0px}
+html,body{margin:0;height:100%;background:var(--bianco);overflow:hidden}
+.versioni{position:fixed;top:0;left:0;right:0;bottom:var(--banda)}
+.versioni iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:var(--bianco)}
+.versioni iframe[data-nascosto]{visibility:hidden;pointer-events:none}
+.interruttore{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:10;display:flex;align-items:center;gap:8px;padding:8px 10px 8px 16px;background:var(--bianco);border-radius:12px;box-shadow:0 4px 16px rgba(17,56,53,.14);font-family:'Plus Jakarta Sans',system-ui,-apple-system,'Segoe UI',Arial,sans-serif;color:var(--verde)}
+.interruttore span{font-size:12px;font-weight:700;margin-right:4px}
+.interruttore button{min-width:44px;height:36px;padding:0 14px;border-radius:999px;border:1px solid var(--grigio);background:transparent;color:var(--grigio);font:inherit;font-size:15px;font-weight:800;cursor:pointer}
+.interruttore button[aria-pressed="true"]{background:var(--verde);border-color:var(--verde);color:var(--bianco)}
+.interruttore button:focus-visible{outline:2px solid var(--verde);outline-offset:2px}
+/* su telefono le pagine finiscono sopra l'interruttore, così non ne copre i bottoni */
+@media (max-width:767px){
+  :root{--banda:calc(76px + env(safe-area-inset-bottom))}
+  .interruttore{bottom:calc(8px + env(safe-area-inset-bottom))}
+  .interruttore button{height:44px}
+}
+</style>
+</head>
+<body>
+
+<div class="versioni">
+  <iframe data-versione="a" title="Versione A"></iframe>
+  <iframe data-versione="b" title="Versione B" data-nascosto></iframe>
+</div>
+
+<div class="interruttore" role="group" aria-label="Versione">
+  <span>Versione</span>
+  <button type="button" data-versione="a" aria-pressed="true">A</button>
+  <button type="button" data-versione="b" aria-pressed="false">B</button>
+</div>
+
+<script>
+(function(){
+  var SOGLIA = 768;
+  var mobile = window.innerWidth < SOGLIA;
+  var frame = {}, bottoni = {};
+  document.querySelectorAll('iframe[data-versione]').forEach(function(f){
+    var v = f.getAttribute('data-versione');
+    frame[v] = f;
+    f.src = v + (mobile ? '-mobile' : '-desktop') + '.html';
+  });
+  document.querySelectorAll('button[data-versione]').forEach(function(b){
+    bottoni[b.getAttribute('data-versione')] = b;
+    b.addEventListener('click', function(){ mostra(b.getAttribute('data-versione'), true); });
+  });
+
+  var attiva = null;
+
+  // la prima sezione con id che tocca il bordo superiore della finestra
+  function sezioneInAlto(win){
+    var sez = win.document.querySelectorAll('section[id]');
+    for (var i = 0; i < sez.length; i++) {
+      if (sez[i].getBoundingClientRect().bottom > 1) return sez[i].id;
+    }
+    return null;
+  }
+
+  function portaA(win, id){
+    if (id === 'hero') { win.scrollTo(0, 0); return; }
+    var el = win.document.getElementById(id);
+    if (el) win.scrollTo(0, Math.ceil(el.getBoundingClientRect().top + win.pageYOffset));
+  }
+
+  function mostra(v, sincronizza){
+    if (v !== 'a' && v !== 'b') v = 'a';
+    if (v === attiva) return;
+    if (sincronizza && attiva) {
+      try {
+        var id = sezioneInAlto(frame[attiva].contentWindow);
+        if (id) portaA(frame[v].contentWindow, id);
+      } catch (e) {}
+    }
+    for (var k in frame) {
+      if (k === v) frame[k].removeAttribute('data-nascosto');
+      else frame[k].setAttribute('data-nascosto', '');
+      bottoni[k].setAttribute('aria-pressed', k === v ? 'true' : 'false');
+    }
+    attiva = v;
+    if (location.hash !== '#' + v) history.replaceState(null, '', '#' + v);
+  }
+
+  mostra(location.hash.slice(1).toLowerCase(), false);
+  window.addEventListener('hashchange', function(){ mostra(location.hash.slice(1).toLowerCase(), true); });
+
+  // se la finestra passa la soglia mobile/desktop, si ricarica con i file giusti
+  var attesa;
+  window.addEventListener('resize', function(){
+    clearTimeout(attesa);
+    attesa = setTimeout(function(){
+      if ((window.innerWidth < SOGLIA) !== mobile) location.reload();
+    }, 300);
+  });
+})();
+</script>
+</body>
+</html>
