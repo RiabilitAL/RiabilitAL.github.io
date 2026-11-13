@@ -294,8 +294,8 @@
     });
   }
 
-  /* ─── Colonna della hero (13/11): si gira trascinando sulla colonna o dentro il cerchio dietro;
-     fuori da lì il tocco fa scorrere la pagina (sul telefono la colonna non deve bloccare lo scorrimento) ─── */
+  /* ─── Colonna della hero (13/11): col mouse si gira trascinando in tutto il riquadro; col dito solo sulla colonna
+     o dentro il cerchio dietro, fuori da lì il tocco fa scorrere la pagina (sul telefono non deve bloccare lo scorrimento) ─── */
   (function () {
     var box = document.querySelector('.hero-3d');
     var mv = box && box.querySelector('[data-colonna]');
@@ -313,7 +313,7 @@
       if (dentro(e.touches[0].clientX, e.touches[0].clientY)) e.preventDefault();
     }, { passive: false });
     box.addEventListener('pointerdown', function (e) {
-      if (e.target.closest('a') || !dentro(e.clientX, e.clientY)) return;
+      if (e.target.closest('a') || (e.pointerType !== 'mouse' && !dentro(e.clientX, e.clientY))) return;
       attivo = e.pointerId; x0 = e.clientX; t0 = mv.getCameraOrbit().theta;
       box.setPointerCapture(e.pointerId); box.classList.add('trascina');
     });
