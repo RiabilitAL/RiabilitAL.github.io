@@ -24,7 +24,7 @@
 <!-- font serviti dal sito (13/11): si precaricano i due file latin -->
 <link rel="preload" href="assets/fonts/plus-jakarta-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/montserrat-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/css/style.css?v=13">
+<link rel="stylesheet" href="assets/css/style.css?v=14">
 <!-- schema (13/11): solo dati scritti anche in pagina. Niente geo (coordinate esatte non verificate), niente aggregateRating (vietato riportare il voto di Google), niente FAQPage finché FAQ 02 e 04 non sono confermate -->
 <script type="application/ld+json">
 {
@@ -124,7 +124,7 @@
 <!-- Modello 3D della colonna: creato da noi (colonna-vertebrale.glb), stesso stile dei macchinari, stessi parametri di luce e rotazione -->
 <div class="hero-3d">
 <span class="hero-3d-anello" aria-hidden="true"></span>
-<model-viewer src="assets/models/colonna-vertebrale.glb?v=7" alt="Modello 3D della colonna vertebrale: trascina per ruotarlo" auto-rotate auto-rotate-delay="0" rotation-per-second="30deg" camera-controls disable-zoom shadow-intensity="1.6" shadow-softness="1" exposure="1.25" camera-orbit="-40deg 80deg 105%" interaction-prompt="none" data-modello-3d><div slot="progress-bar"></div></model-viewer>
+<model-viewer src="assets/models/colonna-vertebrale.glb?v=7" alt="Modello 3D della colonna vertebrale: trascina per ruotarlo" auto-rotate auto-rotate-delay="0" rotation-per-second="30deg" disable-zoom shadow-intensity="1.6" shadow-softness="1" exposure="1.25" camera-orbit="-40deg 80deg 105%" interaction-prompt="none" data-modello-3d data-colonna><div slot="progress-bar"></div></model-viewer>
 <a href="#fisioterapia" class="hotspot"><span class="hotspot-punto"><span class="pulse"></span><span></span></span><span class="chip">Cervicale</span></a>
 <a href="#fisioterapia" class="hotspot"><span class="hotspot-punto"><span class="pulse"></span><span></span></span><span class="chip">Dorsale</span></a>
 <a href="#fisioterapia" class="hotspot"><span class="hotspot-punto"><span class="pulse"></span><span></span></span><span class="chip">Lombare</span></a>
@@ -180,15 +180,6 @@
 <model-viewer src="assets/models/human-tecar.glb" alt="Modello 3D di Human Tecar: trascina per ruotarlo" loading="lazy" auto-rotate auto-rotate-delay="0" rotation-per-second="7.5deg" camera-controls disable-zoom shadow-intensity="1.6" shadow-softness="1" exposure="1.25" camera-orbit="-25deg 78deg 105%" interaction-prompt="none" data-modello-3d data-modello-macchina><div slot="progress-bar"></div></model-viewer>
 </div>
 <span class="chip chip-buio modello-didascalia solo-d" data-modello-nome>Human Tecar</span>
-</div>
-<div class="strum-chips solo-m" role="group" aria-label="I macchinari">
-<button type="button" class="chip" data-macchina="human-tecar" aria-pressed="true" aria-controls="scheda-human-tecar">Human Tecar</button>
-<button type="button" class="chip" data-macchina="onde-urto-storz" aria-pressed="false" aria-controls="scheda-onde-urto-storz">Onde d'urto Storz</button>
-<button type="button" class="chip" data-macchina="laser-laserix" aria-pressed="false" aria-controls="scheda-laser-laserix">Laser Laserix</button>
-<button type="button" class="chip" data-macchina="monos" aria-pressed="false" aria-controls="scheda-monos">MONOS</button>
-<button type="button" class="chip" data-macchina="riablo" aria-pressed="false" aria-controls="scheda-riablo">Riablo</button>
-<button type="button" class="chip" data-macchina="elettroterapia" aria-pressed="false" aria-controls="scheda-elettroterapia">Elettroterapia</button>
-<button type="button" class="chip" data-macchina="sala-attrezzata" aria-pressed="false" aria-controls="scheda-sala-attrezzata">Sala attrezzata</button>
 </div>
 <div class="strum-schede" aria-live="polite">
 <article class="tile lift scheda" id="scheda-human-tecar" data-scheda="human-tecar" data-modello="assets/models/human-tecar.glb">
@@ -457,6 +448,6 @@
 
 <!-- model-viewer: in locale, lo stesso file del sito di prova. Unica libreria del sito. -->
 <script type="module" src="assets/vendor/model-viewer.min.js"></script>
-<script src="assets/js/main.js?v=5" defer></script>
+<script src="assets/js/main.js?v=6" defer></script>
 </body>
 </html>

@@ -294,6 +294,40 @@
     });
   }
 
+  /* ─── Colonna della hero (13/11): si gira trascinando sulla colonna o dentro il cerchio dietro;
+     fuori da lì il tocco fa scorrere la pagina (sul telefono la colonna non deve bloccare lo scorrimento) ─── */
+  (function () {
+    var box = document.querySelector('.hero-3d');
+    var mv = box && box.querySelector('[data-colonna]');
+    var anello = box && box.querySelector('.hero-3d-anello');
+    if (!box || !mv || !anello) return;
+    function dentro(x, y) {
+      var r = anello.getBoundingClientRect();
+      if (Math.hypot(x - (r.left + r.width / 2), y - (r.top + r.height / 2)) <= r.width / 2) return true;
+      try { return !!(mv.positionAndNormalFromPoint && mv.positionAndNormalFromPoint(x, y)); } catch (e) { return false; }
+    }
+    var attivo = null, x0 = 0, t0 = 0;
+    /* sul telefono: se il dito parte dalla colonna o dal cerchio, la pagina non scorre */
+    box.addEventListener('touchstart', function (e) {
+      if (e.touches.length !== 1 || e.target.closest('a')) return;
+      if (dentro(e.touches[0].clientX, e.touches[0].clientY)) e.preventDefault();
+    }, { passive: false });
+    box.addEventListener('pointerdown', function (e) {
+      if (e.target.closest('a') || !dentro(e.clientX, e.clientY)) return;
+      attivo = e.pointerId; x0 = e.clientX; t0 = mv.getCameraOrbit().theta;
+      box.setPointerCapture(e.pointerId); box.classList.add('trascina');
+    });
+    box.addEventListener('pointermove', function (e) {
+      if (e.pointerId !== attivo) return;
+      var o = mv.getCameraOrbit();
+      mv.cameraOrbit = (t0 - (e.clientX - x0) * 0.012) + 'rad ' + o.phi + 'rad ' + o.radius + 'm';
+      mv.jumpCameraToGoal();
+    });
+    function fine(e) { if (e.pointerId === attivo) { attivo = null; box.classList.remove('trascina'); } }
+    box.addEventListener('pointerup', fine);
+    box.addEventListener('pointercancel', fine);
+  })();
+
   /* ─── Menu del telefono (13/11): si apre e si chiude dal bottone, si chiude con Esc, scegliendo una voce o passando al desktop ─── */
   (function () {
     var bottone = document.querySelector('[data-menu-bottone]');
