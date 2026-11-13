@@ -1,0 +1,618 @@
+/* RiabilitAL — home. Fonte: design/finale/FINALE-desktop.html (1440) e FINALE-mobile.html (390).
+   Mobile prima. Breakpoint (approvati 12/11):
+   <768 tavola mobile, margini 20 · 768–1023 tavola mobile, margini 48, team su 3 colonne
+   ≥1024 tavola desktop · 1024–1199 Strumentazione impilata (orbita sopra, scheda sotto) */
+
+/* ═══ Font serviti dal sito (13/11, prima da Google Fonts). File variabili di Google Fonts, licenza OFL:
+   Plus Jakarta Sans 700–800 (il 900 Google non lo ha mai servito: resta 800 come prima), Montserrat 300–700 ═══ */
+@font-face{font-family:'Plus Jakarta Sans';font-style:normal;font-weight:700 800;font-display:swap;src:url(../fonts/plus-jakarta-sans-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C4,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'Plus Jakarta Sans';font-style:normal;font-weight:700 800;font-display:swap;src:url(../fonts/plus-jakarta-sans-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Montserrat';font-style:normal;font-weight:300 700;font-display:swap;src:url(../fonts/montserrat-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C4,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'Montserrat';font-style:normal;font-weight:300 700;font-display:swap;src:url(../fonts/montserrat-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+
+/* ═══ Sistema ═══ */
+:root{
+  /* colori (NOTE-FINALE.md) */
+  --verde:#113835;
+  --verde-scuro:#081f1d;
+  --verde-medio:#184d49;
+  --grigio:#4b6360;
+  --menta:#d5e7e4;
+  --menta-chiaro:#f0f7f6;
+  --fondo:#f8faf9;
+  --bianco:#ffffff;
+  --cta:#f02837;
+  --cta-hover:#d41c2a;
+  --cta-attivo:#b81220;
+  --rosa:#fde8ea;
+  --stelle:#ffb800;
+  /* i verdi del sistema con trasparenza: ombre e veli delle foto */
+  --ombra-lift:0 10px 24px rgba(17,56,53,.08);
+  --ombra-hov:0 22px 48px rgba(17,56,53,.14);
+  --ombra-nodo:0 8px 20px rgba(8,31,29,.4);
+  --ombra-testo:0 2px 12px rgba(8,31,29,.6);
+  --velo-pannello:linear-gradient(180deg,rgba(8,31,29,0) 35%,rgba(8,31,29,.78) 100%);
+  --velo-foto:linear-gradient(180deg,rgba(8,31,29,0) 40%,rgba(8,31,29,.8) 100%);
+
+  /* caratteri */
+  --font-titoli:'Plus Jakarta Sans',Montserrat,Arial,sans-serif;
+  --font-testo:Montserrat,'Segoe UI',Arial,sans-serif;
+
+  /* raggi — valori della tavola; quelli fuori da "8–16 / 56" di NOTE-FINALE sono registrati nel DESIGN-BRIEF (decisione 12/11) */
+  --r-pill:999px;
+  --r-sezione:36px;      /* desktop 56 */
+  --r-tessera:18px;      /* desktop 20 */
+  --r-foto:18px;         /* desktop 24 */
+  --r-recensione:16px;   /* desktop 18 */
+  --r-hero3d:22px;       /* desktop 28 */
+  --r-card:16px;
+  --r-ph:14px;
+  --r-ico:12px;          /* desktop 13 */
+  --r-menu:12px;
+  --r-tacca:3px;
+
+  /* misure che cambiano fra mobile e desktop */
+  --gutter:20px;
+  --h2:32px;
+  --nav-h:56px;          /* desktop 62: l'elemento più alto (44 / 46) più 6 / 8 px sopra e sotto */
+}
+
+/* ═══ Base ═══ */
+*,*::before,*::after{box-sizing:border-box}
+/* nella tavola questi elementi misurano bordo e padding fuori dalla larghezza: si tiene la stessa misura */
+.rec,.faq-icona,.hero-3d-anello,.orbita-anello{box-sizing:content-box}
+/* la navbar resta fissa in alto: gli ancoraggi (#fisioterapia ecc.) si fermano sotto */
+html{scroll-padding-top:var(--nav-h)}
+body{margin:0;background:var(--bianco);color:var(--verde);font-family:var(--font-testo);-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{font-family:var(--font-titoli);margin:0;color:inherit}
+p,figure,dl,dd{margin:0}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit}
+svg{flex:none}
+:focus-visible{outline:2px solid var(--verde);outline-offset:2px}
+.scuro :focus-visible{outline-color:var(--bianco)}
+.scuro .scheda :focus-visible{outline-color:var(--verde)}
+
+.wrap{max-width:1376px;margin:0 auto;padding:0 var(--gutter);width:100%}
+
+/* ═══ Componenti ═══ */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;border-radius:var(--r-pill);padding:0 22px;height:52px;font-weight:600;font-size:15px;white-space:nowrap;border:0;cursor:pointer}
+.btn svg{transition:transform .25s}
+.btn:hover svg{transform:translateX(4px)}
+.cta{background:var(--cta);color:var(--bianco)}
+.cta:hover{background:var(--cta-hover)}
+.cta:active{background:var(--cta-attivo)}
+.btn-chiaro{border:1.5px solid var(--menta);color:var(--bianco);background:transparent}
+.btn-linea{border:1.5px solid var(--verde);color:var(--verde);background:transparent}
+
+.chip{display:inline-flex;align-items:center;gap:6px;border-radius:var(--r-pill);padding:7px 12px;font-size:12px;font-weight:600;white-space:nowrap}
+.chip-buio{background:var(--verde-scuro);color:var(--menta);border:1px solid var(--verde-medio)}
+.chip-menta{background:var(--menta-chiaro);color:var(--verde)}
+.chip-verde{background:var(--verde);color:var(--bianco)}
+.chip-bianco{background:var(--bianco);color:var(--verde)}
+
+.tile{background:var(--bianco);border:1px solid var(--menta);border-radius:var(--r-tessera)}
+.lift{box-shadow:var(--ombra-lift)}
+
+/* segnaposto foto: la didascalia dice quale foto va dove (anche in data-foto) */
+.ph{background:var(--menta);border-radius:var(--r-ph);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:var(--grigio);font-size:12px;font-weight:500;text-align:center;padding:12px;line-height:1.4}
+/* foto vera al posto del segnaposto: stesso riquadro, la foto lo riempie senza deformarsi */
+img.ph,img.pph{width:100%;object-fit:cover;padding:0;vertical-align:top}
+img.pph,.pt img.ph{height:100%;padding:0}
+
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--grigio)}
+.h2{font-size:var(--h2);font-weight:800;letter-spacing:-.025em;line-height:1.06}
+.lead{font-size:15px;line-height:1.55;color:var(--grigio)}
+.stars{display:inline-flex;gap:2px}
+.stella{color:var(--stelle)}
+.ico{width:40px;height:40px;border-radius:var(--r-ico);background:var(--menta);display:flex;align-items:center;justify-content:center;color:var(--verde);flex:none}
+.ico svg{width:20px;height:20px}
+
+/* parole grandi di sfondo, in contorno */
+.ghost{font-family:var(--font-titoli);font-weight:900;letter-spacing:-.04em;color:transparent;-webkit-text-stroke:1px var(--menta);pointer-events:none;user-select:none;line-height:1}
+.ghost-sez{position:absolute;left:14px;top:14px;font-size:96px;letter-spacing:-.05em;white-space:nowrap}
+
+.dots{background-image:radial-gradient(var(--verde-medio) 1.2px,transparent 1.6px);background-size:22px 22px}
+
+/* testata delle sezioni */
+.sez-testa{position:relative;display:flex;flex-direction:column;gap:12px}
+.sez-titoli{display:flex;flex-direction:column;gap:12px}
+
+/* ═══ Movimento ═══ */
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes spinr{from{transform:rotate(0deg)}to{transform:rotate(-360deg)}}
+@keyframes mq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes mqr{from{transform:translateX(-50%)}to{transform:translateX(0)}}
+@keyframes pulse{from{transform:scale(1);opacity:.7}to{transform:scale(2.8);opacity:0}}
+.pulse{animation:pulse 2.2s ease-out infinite}
+.halo{animation:spin 14s linear infinite;background:conic-gradient(from 0deg,var(--menta) 0deg,var(--verde-medio) 120deg,var(--verde) 200deg,var(--menta) 360deg)}
+.zoom{transition:transform .5s}
+.zoomwrap:hover .zoom{transform:scale(1.04)}
+
+/* modelli 3D (model-viewer): riempiono il loro riquadro, fondo trasparente anche mentre caricano */
+model-viewer{background:transparent;--poster-color:transparent}
+.hero-3d model-viewer{width:100%;height:100%}
+.modello-3d model-viewer{width:170px;height:170px}
+
+/* ═══ Navbar (voci e menu si sistemano al passo 17). Fissa in alto mentre si scorre, fondo bianco pieno ═══ */
+.nav{background:var(--bianco);width:100%;height:var(--nav-h);padding:0 16px 0 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid var(--menta);position:sticky;top:0;z-index:10}
+/* barra di avanzamento della pagina (13/11): come nel sito di prova di Francesco, ma subito sotto la navbar */
+.avanzamento{position:fixed;top:var(--nav-h);left:0;right:0;height:2.5px;background:var(--cta);transform:scaleX(0);transform-origin:left;z-index:11;pointer-events:none}
+.nav-logo{display:flex;align-items:center;gap:8px}
+/* logo vero: alto 32 px, 38 su desktop (non si ingrandisce: deciso il 12/11) */
+.nav-logo-img{height:32px;width:auto;display:block}
+.nav-link{display:flex;align-items:center;gap:32px;font-size:15px;font-weight:500;color:var(--verde)}
+.nav-azioni{display:flex;align-items:center;gap:8px}
+.nav-cta{height:38px;padding:0 14px;font-size:13px}
+/* menu del telefono (13/11): pannello bianco che scende sotto la navbar */
+.nav-mobile{position:absolute;top:100%;left:0;right:0;background:var(--bianco);border-bottom:1px solid var(--menta);box-shadow:var(--ombra-lift);padding:4px var(--gutter) 12px;display:flex;flex-direction:column}
+.nav-mobile[hidden]{display:none}
+.nav-mobile a{padding:14px 0;font-size:16px;font-weight:600;color:var(--verde);border-bottom:1px solid var(--menta)}
+.nav-mobile a:last-child{border-bottom:0}
+.nav-menu{width:44px;height:44px;border-radius:var(--r-menu);border:1px solid var(--menta);background:var(--bianco);display:flex;align-items:center;justify-content:center;color:var(--verde);cursor:pointer;padding:0}
+
+/* ═══ Hero ═══ */
+.hero{background:var(--verde);color:var(--bianco);position:relative;overflow:hidden}
+.hero-griglia{display:flex;flex-direction:column;gap:22px;padding-top:40px;padding-bottom:36px}
+.hero-testo{display:contents}
+.hero-3d-col{order:1}
+.hero-numeri{order:2}
+.hero-h1{align-self:flex-start;border:1px solid var(--verde-medio);background:var(--verde-scuro);color:var(--menta);font-family:var(--font-testo)}
+.hero-h1 .ic-pin{width:14px;height:14px}
+.hero-titolo{font-family:var(--font-titoli);font-size:42px;font-weight:800;line-height:1.02;letter-spacing:-.03em;color:var(--bianco)}
+.hero-sotto{font-size:16px;line-height:1.55;color:var(--menta);font-weight:300}
+.hero-cta{display:flex;flex-direction:column;gap:10px}
+.hero-numeri{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;border-top:1px solid var(--verde-medio);padding-top:18px}
+.hero-numeri div{display:flex;flex-direction:column;gap:3px}
+.hero-numeri strong{font-family:var(--font-titoli);font-size:22px;font-weight:800;line-height:1;display:inline-flex;align-items:center;gap:4px}
+.hero-numeri strong svg{width:16px;height:16px}
+.hero-numeri span{font-size:11px;color:var(--menta);line-height:1.3}
+.hero-3d{position:relative;width:100%;height:400px;border-radius:var(--r-hero3d);background:radial-gradient(circle at 50% 48%,var(--verde-medio) 0%,var(--verde) 62%);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.hero-3d-anello{position:absolute;width:300px;height:300px;border-radius:50%;border:1px solid var(--verde-medio);left:50%;top:50%;transform:translate(-50%,-50%)}
+.hotspot{position:absolute;display:flex;align-items:center;gap:8px}
+.hotspot:nth-of-type(1){left:60%;top:20%}
+.hotspot:nth-of-type(2){left:62%;top:47%}
+.hotspot:nth-of-type(3){left:59%;top:72%}
+.hotspot-punto{position:relative;width:10px;height:10px;display:block}
+.hotspot-punto span{position:absolute;inset:0;border-radius:50%}
+.hotspot-punto .pulse{background:var(--menta)}
+.hotspot-punto span+span{background:var(--bianco);border:2px solid var(--verde)}
+.hotspot .chip{background:var(--bianco);color:var(--verde);padding:5px 10px;font-size:11px}
+
+/* ═══ Fisioterapia ═══ */
+.sez{background:var(--fondo);padding:56px 0;position:relative;overflow:hidden}
+.fisio .h2{font-size:30px;line-height:1.08}
+.fisio-corpo{position:relative;display:flex;flex-direction:column;gap:16px}
+.fisio .sez-testa{padding-top:56px}
+.serv-area{display:flex;flex-direction:column;gap:16px}
+.serv-big{display:flex;flex-direction:column;gap:16px}
+.serv-small{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+/* .sc .pw .hd .ico .tb .ts .lt .sl: struttura delle tessere usata dalla rotazione (main.js) */
+.sc{display:flex;flex-direction:column;overflow:hidden}
+.sc .pw{overflow:hidden}
+.sc .ph{height:170px}
+.sc .bd{display:flex;flex-direction:column;gap:10px}
+.sc .hd{display:flex;align-items:center;gap:10px}
+.sc.big{padding:14px;gap:14px}
+.sc.big .bd{padding:0 6px 6px}
+.sc.small{padding:16px;gap:8px}
+.sc.small .bd{gap:8px}
+.sc.small .hd{justify-content:space-between}
+.sc .tb{font-size:22px;font-weight:800;letter-spacing:-.02em}
+.sc .lt{font-size:13.5px;line-height:1.55;color:var(--grigio)}
+.sc .ts{font-size:15px;font-weight:800}
+.sc .sl{font-size:12px;line-height:1.45;color:var(--grigio)}
+.sc.small .pw,.sc.small .tb,.sc.small .lt{display:none}
+.sc.big .ts,.sc.big .sl{display:none}
+
+/* ═══ Strumentazione ═══ */
+.strum{background:var(--verde);color:var(--bianco);padding:56px 0;border-radius:var(--r-sezione);position:relative;overflow:hidden;--orbita:260px;--raggio:130px}
+.strum .sez-testa .eyebrow,.strum .sez-testa .lead{color:var(--menta)}
+.strum-corpo{position:relative;display:flex;flex-direction:column;gap:18px}
+.strum-griglia{display:flex;flex-direction:column;gap:18px}
+.orbita-palco{position:relative;height:360px;display:flex;align-items:center;justify-content:center;margin:0 calc(-1 * var(--gutter))}
+.orbita-anello,.orbita-alone{position:absolute;border-radius:50%;left:50%;top:50%;transform:translate(-50%,-50%)}
+.orbita-anello{width:var(--orbita);height:var(--orbita);border:1px solid var(--verde-medio)}
+.orbita-alone{width:170px;height:170px;background:radial-gradient(circle,var(--verde-medio) 0%,var(--verde) 70%)}
+.orbit{position:absolute;width:var(--orbita);height:var(--orbita);left:50%;top:50%;margin:calc(var(--orbita) / -2) 0 0 calc(var(--orbita) / -2);animation:spin 60s linear infinite}
+.node{position:absolute;left:calc(50% + var(--raggio) * var(--x));top:calc(50% + var(--raggio) * var(--y));transform:translate(-50%,-50%);background:none;border:0;padding:0;cursor:pointer;color:inherit;border-radius:var(--r-pill)}
+/* sette posizioni sull'orbita, ogni 360/7 gradi, la prima in alto */
+.node:nth-child(1){--x:0;--y:-1}
+.node:nth-child(2){--x:.782;--y:-.623}
+.node:nth-child(3){--x:.975;--y:.223}
+.node:nth-child(4){--x:.434;--y:.901}
+.node:nth-child(5){--x:-.434;--y:.901}
+.node:nth-child(6){--x:-.975;--y:.223}
+.node:nth-child(7){--x:-.782;--y:-.623}
+.nodetxt{animation:spinr 60s linear infinite;display:inline-flex;background:var(--verde-scuro);color:var(--menta);border:1px solid var(--verde-medio);padding:6px 10px;font-size:11px}
+.node[aria-pressed="true"] .nodetxt{background:var(--bianco);color:var(--verde);border-color:var(--bianco);box-shadow:var(--ombra-nodo)}
+/* l'orbita gira sempre, anche col mouse sopra, col fuoco e con "riduci movimento": deroga a WCAG 2.2.2 voluta da Gabriele (12/11) */
+.modello-3d{perspective:700px;display:flex;align-items:center;justify-content:center;position:relative}
+.modello-didascalia{position:absolute;left:50%;bottom:120px;transform:translateX(-50%);font-size:12px}
+.strum-chips{display:flex;gap:6px;flex-wrap:wrap;position:relative}
+.strum-chips .chip{padding:5px 10px;font-size:11px;border:1px solid var(--verde-medio);color:var(--menta);background:transparent;cursor:pointer}
+.strum-chips .chip[aria-pressed="true"]{background:var(--bianco);color:var(--verde);border-color:var(--bianco)}
+.scheda{padding:22px 20px;display:flex;flex-direction:column;gap:12px;color:var(--verde);background:var(--bianco);position:relative}
+.scheda[hidden]{display:none}
+.scheda-testa{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.chip-evidenza{background:var(--rosa);color:var(--cta-attivo);padding:3px 8px;font-size:9px;letter-spacing:.06em;text-transform:uppercase}
+.scheda h3{font-size:28px;font-weight:800;letter-spacing:-.02em}
+.scheda p{font-size:14px;line-height:1.55;color:var(--grigio)}
+.scheda-foto{height:150px;font-size:12px}
+.scheda-dati{display:flex;flex-direction:column;font-size:13.5px}
+.scheda-dati div{display:flex;justify-content:space-between;gap:16px;padding:9px 0;border-top:1px solid var(--menta)}
+.scheda-dati div:last-child{border-bottom:1px solid var(--menta)}
+.scheda-dati dt{color:var(--grigio)}
+.scheda-dati dd{font-weight:600;text-align:right}
+
+/* ═══ Riabilitazione ═══ */
+.riab-corpo{position:relative;display:flex;flex-direction:column;gap:16px}
+.riab .sez-testa{padding-top:56px}
+/* mobile: lista a righe */
+.riab-mobile{display:flex;flex-direction:column;gap:16px}
+.riab-lista{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;border-top:1px solid var(--menta);position:relative}
+.rrow{display:grid;grid-template-columns:34px minmax(0,1fr);gap:12px;align-items:center;padding:16px 4px;border-bottom:1px solid var(--menta);transition:background .25s,padding-left .25s,padding-right .25s}
+.rrow:hover{background:var(--menta-chiaro);padding-left:24px;padding-right:8px}
+.rrow .ico{width:36px;height:36px;border-radius:50%;transition:transform .25s}
+.rrow .ico svg{width:18px;height:18px}
+.rrow:hover .ico{transform:translateX(4px)}
+.rnum{font-family:var(--font-titoli);font-weight:800;font-size:11px;letter-spacing:.1em;color:var(--grigio)}
+.rrow div{display:flex;flex-direction:column;gap:4px}
+.rrow h3{font-size:16px;font-weight:800;letter-spacing:-.01em;line-height:1.2}
+.rrow p{font-size:12.5px;line-height:1.45;color:var(--grigio)}
+.riab-cta{width:100%}
+/* desktop: pannelli e foto grandi */
+.riab-desktop{display:flex;flex-direction:column;gap:48px}
+.riab-gruppo{display:flex;flex-direction:column;gap:18px}
+.riab-etichetta{display:flex;align-items:center;gap:16px}
+.riab-linea{flex:1;height:1px;background:var(--menta)}
+.pans{display:flex;gap:12px;align-items:stretch}
+.pan{position:relative;min-width:0;height:460px;border-radius:var(--r-tessera);overflow:hidden;background:var(--menta);display:block;color:var(--bianco);flex:1 1 0;transition:flex-grow .9s cubic-bezier(.2,.8,.2,1)}
+.pan.open{flex-grow:3}
+.pph{position:absolute;inset:0;background:var(--menta);transition:transform 4.5s linear}
+.pan.open .pph{transform:scale(1.06)}
+.velo{position:absolute;inset:0;background:var(--velo-pannello)}
+.pt .velo{background:var(--velo-foto)}
+.num-chip{position:absolute;left:14px;top:14px;background:var(--verde);color:var(--bianco);padding:6px 11px;font-size:12px;font-family:var(--font-titoli);font-weight:800;letter-spacing:.06em}
+/* pannello chiuso: il nome in orizzontale in basso, come il titolo delle foto "Per area" (va a capo se serve) */
+.pvt{position:absolute;left:18px;right:18px;bottom:18px;font-family:var(--font-titoli);font-weight:800;font-size:21px;letter-spacing:-.02em;line-height:1.15;color:var(--bianco);opacity:1;transition:opacity .3s}
+.pan.open .pvt{opacity:0}
+.pcard{position:absolute;left:18px;right:18px;bottom:18px;background:var(--bianco);color:var(--verde);border-radius:var(--r-ph);padding:20px 22px;display:flex;flex-direction:column;gap:10px;max-width:460px;opacity:0;transform:translateY(14px);transition:opacity .45s,transform .45s;pointer-events:none}
+.pan.open .pcard{opacity:1;transform:none;transition-delay:.45s}
+.pcard h3{font-size:23px;font-weight:800;letter-spacing:-.02em;line-height:1.15}
+.pcard p{font-size:14.5px;line-height:1.55;color:var(--grigio)}
+.vai{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600}
+.pcard .vai{margin-top:2px}
+.pdots{display:flex;gap:8px;justify-content:center}
+.pdots span{width:8px;height:8px;border-radius:50%;background:var(--menta);transition:background .3s,width .3s}
+.pdots span.on{background:var(--verde);width:28px;border-radius:var(--r-pill)}
+.riab-area{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px}
+.pt{position:relative;height:320px;border-radius:var(--r-tessera);overflow:hidden;background:var(--menta);display:block;color:var(--bianco)}
+.pt .ph{position:absolute;inset:0;border-radius:0;justify-content:flex-start;padding-top:52px}
+.pt-testo{position:absolute;left:18px;right:18px;bottom:18px;display:flex;flex-direction:column;gap:8px}
+.pt-testo h3{font-size:21px;font-weight:800;letter-spacing:-.02em;line-height:1.15;color:var(--bianco)}
+
+/* ═══ Studio ═══ */
+.studio{background:var(--bianco);padding:56px 0 40px;overflow:hidden;position:relative;display:flex;flex-direction:column;gap:16px}
+.studio-testa{position:relative;display:flex;flex-direction:column;gap:12px;padding-top:56px}
+.studio-chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip-interno{display:inline-flex;align-items:center;gap:6px}
+.studio-binario{overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding:4px var(--gutter) 12px}
+.studio-binario::-webkit-scrollbar{display:none}
+.studio-striscia{display:flex;gap:12px}
+.studio-fig{width:320px;flex:none;border-radius:var(--r-foto);overflow:hidden;position:relative;scroll-snap-align:start}
+.studio-fig .ph{height:260px;border-radius:0}
+.studio-fig figcaption{position:absolute;left:12px;bottom:12px;display:flex;gap:8px}
+.studio-fig figcaption .chip{font-size:11px}
+.studio-fig .line{display:none}
+.dots-nav{display:flex;gap:6px;align-items:center}
+.dots-nav [data-dot]{width:6px;height:6px;border-radius:var(--r-tacca);background:var(--menta);transition:width .5s,background .5s}
+.dots-nav [data-dot].on{width:28px;background:var(--verde)}
+.dots-count{margin-left:10px;font-size:12px;color:var(--grigio)}
+.studio-info{display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--grigio)}
+.studio-orari span+span::before{content:" · "}
+
+/* ═══ Team ═══ */
+.team{background:var(--menta-chiaro);padding:56px 0;position:relative;overflow:hidden;border-radius:var(--r-sezione) var(--r-sezione) 0 0}
+.ghost-team{left:auto;right:10px;top:10px;-webkit-text-stroke:1px var(--bianco)}
+.team-corpo{position:relative;display:flex;flex-direction:column;gap:28px;align-items:center;text-align:center}
+.team-testa{display:flex;flex-direction:column;gap:12px;align-items:center;padding-top:40px}
+.team-griglia{display:grid;grid-template-columns:minmax(0,1fr);gap:28px;width:100%}
+.socio{display:flex;flex-direction:column;align-items:center;gap:12px}
+.ritratto{position:relative;width:172px;height:172px;display:flex;align-items:center;justify-content:center}
+.halo{position:absolute;inset:0;border-radius:50%}
+.halo-2{animation-delay:-5s}
+.halo-3{animation-delay:-9s}
+.ritratto-fondo{position:absolute;inset:5px;border-radius:50%;background:var(--menta-chiaro)}
+.ritratto .ph{position:relative;width:150px;height:150px;border-radius:50%;padding:0;font-size:11px}
+.socio h3{font-size:20px;font-weight:800}
+.ruolo{font-size:13px;font-weight:600;color:var(--grigio);margin-top:3px}
+.socio-chips{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+.socio-chips .chip{padding:5px 11px;font-size:12px}
+/* nella foto dei tre le teste stanno in alto: il riquadro largo taglia dal basso, non dall'alto */
+.team-foto{width:100%;height:220px;border-radius:var(--r-foto);background:var(--bianco);border:1px solid var(--menta);object-position:50% 2%}
+
+/* ═══ Recensioni ═══ */
+.recensioni{background:var(--verde-scuro);color:var(--bianco);padding:56px 0;overflow:hidden;display:flex;flex-direction:column;gap:20px}
+.recensioni .eyebrow{color:var(--menta)}
+.rec-testa{display:flex;flex-direction:column;gap:12px}
+.rec-voto{display:flex;align-items:center;gap:12px}
+.rec-numero{font-family:var(--font-titoli);font-weight:900;font-size:44px;line-height:1;letter-spacing:-.04em}
+.rec-voto-dx{display:flex;flex-direction:column;gap:4px}
+.rec-voto .stars svg{width:16px;height:16px}
+.rec-link{font-size:13px;color:var(--menta);border-bottom:1px solid var(--verde-medio)}
+.rec-nastri{display:flex;flex-direction:column;gap:20px}
+.rec-binario{overflow:hidden}
+.mq,.mqr{display:flex;width:max-content}
+.mq{animation:mq 34s linear infinite}
+.mqr{animation:mqr 40s linear infinite}
+/* margine al posto del gap: così metà nastro = metà esatta e il giro non salta */
+.rec{width:280px;flex:none;margin-right:12px;background:var(--verde);border:1px solid var(--verde-medio);border-radius:var(--r-recensione);padding:18px;display:flex;flex-direction:column;gap:8px}
+.rec-testo{font-size:14px;line-height:1.5}
+.rec-chi{font-size:12px;color:var(--menta)}
+.rec-chi strong{font-weight:600;color:var(--bianco)}
+.rec-bottone{width:100%}
+
+/* ═══ FAQ ═══ */
+.faq{background:var(--bianco);padding:56px 0;position:relative;overflow:hidden}
+.faq-griglia{position:relative;display:flex;flex-direction:column;gap:10px}
+.faq-intro{display:flex;flex-direction:column;gap:12px;padding-top:50px;margin-bottom:6px}
+.faq-intro .btn{align-self:flex-start;margin-top:8px}
+.faq-lista{display:flex;flex-direction:column;gap:10px}
+.faq-voce{padding:16px 18px}
+.faq-voce[open]{padding:18px;border-color:var(--verde);background:var(--fondo);box-shadow:var(--ombra-lift)}
+.faq-voce summary{display:flex;justify-content:space-between;align-items:center;gap:12px;cursor:pointer;list-style:none}
+.faq-voce summary::-webkit-details-marker{display:none}
+.faq-voce h3{font-size:16px;font-weight:800;display:flex;gap:10px;align-items:center}
+.faq-num{font-size:28px;-webkit-text-stroke:1.2px var(--menta)}
+.faq-voce[open] .faq-num{-webkit-text-stroke-color:var(--verde)}
+.faq-icona{width:32px;height:32px;border-radius:50%;border:1px solid var(--menta);display:flex;align-items:center;justify-content:center;flex:none}
+.faq-icona svg{width:14px;height:14px}
+.faq-voce[open] .faq-icona{background:var(--verde);border:0;color:var(--bianco)}
+.faq-meno,.faq-voce[open] .faq-piu{display:none}
+.faq-voce[open] .faq-meno{display:block}
+.faq-voce p{font-size:13.5px;line-height:1.55;color:var(--grigio);margin-top:10px}
+
+/* ═══ Contatti ═══ */
+.contatti{background:var(--bianco);position:relative;display:flex;flex-direction:column}
+.mappa{position:relative;background:var(--menta);height:260px;border-radius:var(--r-sezione) var(--r-sezione) 0 0;overflow:hidden;--mappa-su:70px}
+/* la mappa sale oltre il bordo alto della sezione di --mappa-su: così il riquadro di Google in alto a sinistra (nome, indirizzo, "Apri in Maps") resta fuori vista. Logo e scritte di Google in basso restano visibili (12/11) */
+.mappa-frame{position:absolute;left:0;right:0;bottom:0;top:calc(-1 * var(--mappa-su));width:100%;height:calc(100% + var(--mappa-su));border:0;display:block}
+.contatti-scheda{position:relative;margin:-40px var(--gutter) 40px;padding:24px 20px;display:flex;flex-direction:column;gap:16px;color:var(--verde)}
+.contatti-testa{display:flex;justify-content:space-between;align-items:center}
+.aperto{padding:4px 9px;font-size:10px}
+.aperto-punto{position:relative;width:7px;height:7px;display:block}
+.aperto-punto span{position:absolute;inset:0;border-radius:50%;background:var(--verde)}
+.contatti .h2{font-size:26px}
+.contatti-indirizzo{font-size:14px;line-height:1.5;color:var(--grigio)}
+.contatti-bottoni{display:flex;flex-direction:column;gap:10px}
+.orari{display:flex;flex-direction:column;gap:5px;border-top:1px solid var(--menta);padding-top:14px}
+.orari div{display:flex;justify-content:space-between;font-size:13.5px}
+.orari dd{font-weight:600}
+.orari-chiuso{color:var(--grigio)}
+.orari-chiuso dd{font-weight:400}
+
+/* ═══ Footer (12/11): basso e compatto, fondo --verde-scuro ═══ */
+.footer{background:var(--verde-scuro);color:var(--menta);padding:40px 0 20px;font-size:14px;line-height:1.6}
+.footer a{color:var(--bianco)}
+.footer a:hover{text-decoration:underline}
+.footer-griglia{display:flex;flex-direction:column;gap:28px}
+.footer-logo{align-self:flex-start;display:block}
+.footer-logo img{height:38px;width:auto;display:block}
+.footer-titolo{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--menta);margin-bottom:10px}
+.footer-link{display:flex;gap:48px}
+.footer-lista{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.footer-contatti{font-style:normal;display:flex;flex-direction:column;gap:6px}
+.footer-orari{margin-top:6px}
+.footer-basso{display:flex;flex-direction:column;gap:8px;margin-top:28px;padding-top:16px;border-top:1px solid var(--verde-medio);font-size:12.5px}
+.footer-link-bassi{display:flex;gap:20px}
+
+/* ═══ 768–1023: tavola mobile con i margini del desktop ═══ */
+@media (min-width:768px){
+  :root{--gutter:48px}
+  .team-griglia{grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
+}
+
+/* ═══ ≥1024: tavola desktop ═══ */
+@media (min-width:1024px){
+  :root{
+    --r-sezione:56px;--r-tessera:20px;--r-foto:24px;--r-recensione:18px;--r-hero3d:28px;--r-ico:13px;
+    --ombra-lift:0 12px 32px rgba(17,56,53,.08);
+    --ombra-nodo:0 10px 24px rgba(8,31,29,.4);
+    --h2:46px;
+    --nav-h:62px;
+  }
+  .btn{padding:0 26px}
+  .chip{padding:8px 14px;font-size:13px}
+  .ph{gap:8px;font-size:13px;padding:16px}
+  .eyebrow{font-size:13px}
+  .lead{font-size:17px;line-height:1.6}
+  .ico{width:44px;height:44px}
+  .ico svg{width:22px;height:22px}
+  .ghost-sez{left:48px;top:30px;font-size:200px}
+  .dots{background-size:24px 24px}
+  .hov{transition:transform .25s,box-shadow .25s}
+  .hov:hover{transform:translateY(-6px);box-shadow:var(--ombra-hov)}
+
+  .sez-testa{flex-direction:row;justify-content:space-between;align-items:flex-end;gap:32px;flex-wrap:wrap}
+  .sez-titoli{gap:14px;max-width:720px}
+  .sez-testa .lead{max-width:420px}
+
+  /* navbar */
+  .nav{padding:0 48px;gap:32px}
+  .nav-logo{gap:10px}
+  .nav-logo-img{height:38px}
+  .nav-cta{height:46px;padding:0 22px;font-size:14px}
+
+  /* hero */
+  .hero-griglia{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(520px,100%),1fr));gap:48px;align-items:center;padding-top:72px;padding-bottom:72px;min-height:740px}
+  .hero-testo{display:flex;flex-direction:column;gap:28px}
+  .hero-h1 .ic-pin{width:16px;height:16px}
+  .hero-titolo{font-size:66px}
+  .hero-sotto{font-size:19px;line-height:1.6;max-width:540px}
+  .hero-cta{flex-direction:row;flex-wrap:wrap;gap:14px}
+  .hero-numeri{display:flex;gap:0;margin-top:14px;padding-top:24px}
+  .hero-numeri div{gap:4px;padding:0 28px;border-right:1px solid var(--verde-medio)}
+  .hero-numeri div:first-child{padding-left:0}
+  .hero-numeri div:last-child{padding-right:0;border-right:0}
+  .hero-numeri strong{font-size:28px;gap:6px}
+  .hero-numeri strong svg{width:22px;height:22px}
+  .hero-numeri span{font-size:13px;line-height:normal}
+  .hero-3d-col{display:flex;justify-content:center}
+  .hero-3d{max-width:560px;height:600px}
+  .hero-3d-anello{width:440px;height:440px}
+  .hotspot{gap:10px}
+  .hotspot:nth-of-type(1){left:62%;top:17%}
+  .hotspot:nth-of-type(2){left:64%;top:45%}
+  .hotspot:nth-of-type(3){left:61%;top:73%}
+  .hotspot-punto{width:12px;height:12px}
+  .hotspot .chip{padding:6px 12px;font-size:13px}
+
+  /* fisioterapia */
+  .sez{padding:96px 0}
+  .fisio .h2{font-size:42px}
+  .fisio-corpo{gap:32px;padding-top:120px}
+  .fisio .sez-testa{padding-top:0}
+  .serv-area{gap:32px}
+  .serv-big{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+  .serv-small{grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+  .sc .ph{height:230px}
+  .sc .bd{gap:12px}
+  .sc .hd{gap:12px}
+  .sc.big{padding:20px;gap:18px}
+  .sc.big .bd{padding:0 8px 8px}
+  .sc.small{padding:22px 20px;gap:12px;min-height:190px}
+  .sc.small .bd{gap:12px}
+  .sc .tb{font-size:28px}
+  .sc .lt{font-size:15px;line-height:1.6}
+  .sc .ts{font-size:16px;line-height:1.2}
+  .sc .sl{font-size:12.5px;line-height:1.5}
+
+  /* strumentazione: qui impilata (1024–1199), affiancata da 1200 */
+  .strum{padding:96px 0;--orbita:560px;--raggio:280px}
+  .ghost-strum{-webkit-text-stroke-color:var(--verde-medio)}
+  .strum-corpo{gap:40px}
+  .strum .sez-testa .lead{max-width:400px}
+  .strum-griglia{align-items:center;gap:40px}
+  .orbita-palco{height:640px;margin:0;width:100%}
+  .orbita-alone{width:300px;height:300px}
+  .nodetxt{padding:10px 16px;font-size:13px}
+  .modello-3d{perspective:900px}
+  .modello-3d model-viewer{width:300px;height:300px}
+  .strum-schede{width:100%;max-width:420px}
+  .scheda{padding:34px;gap:16px}
+  .chip-evidenza{padding:4px 9px;font-size:10px}
+  .scheda h3{font-size:34px;letter-spacing:-.025em;line-height:1.05}
+  .scheda p{font-size:15px;line-height:1.6}
+  .scheda-dati{font-size:14px}
+  .scheda-dati div{padding:10px 0}
+  .scheda .btn{align-self:flex-start}
+
+  /* riabilitazione */
+  .riab{padding:96px 0 112px}
+  .riab-corpo{gap:48px;padding-top:120px}
+  .riab .sez-testa{padding-top:0}
+  /* il testo della Riabilitazione va sotto il titolo, a tutta larghezza: al massimo tre righe (Gabriele, 13/11) */
+  .riab .sez-testa .lead{max-width:none;flex-basis:100%}
+
+  /* studio */
+  .studio{display:block;padding:96px 0 80px}
+  .studio-testa{flex-direction:row;justify-content:space-between;align-items:flex-end;gap:32px;flex-wrap:wrap;padding-top:120px}
+  .studio-chips{align-items:center;gap:16px;flex-wrap:nowrap}
+  .studio-binario{overflow:hidden;scroll-snap-type:none;padding:36px 0 0 max(48px,calc((100% - 1280px) / 2))}
+  .studio-striscia{gap:16px}
+  .studio-fig{width:420px;transition:width 900ms cubic-bezier(.5,0,.15,1)}
+  .studio-fig.grande{width:860px}
+  .studio-fig .ph{height:500px}
+  .studio-fig figcaption{left:20px;bottom:20px}
+  .studio-fig figcaption .chip{font-size:13px}
+  .studio-fig .line{display:inline-flex;transition:opacity .45s}
+  .studio-fig .line[hidden]{display:none}
+  .studio-piede{display:flex;justify-content:space-between;align-items:center;gap:16px;padding-top:28px;flex-wrap:wrap}
+  .studio-info{flex-direction:row;gap:24px;font-size:14px}
+  .studio-orari{display:contents}
+  .studio-orari span+span::before{content:none}
+
+  /* team */
+  .ghost-team{right:48px;top:30px}
+  .team{padding:96px 0}
+  .team-corpo{gap:48px;padding-top:60px}
+  .team-testa{gap:14px;max-width:760px;padding-top:0}
+  .socio{gap:18px}
+  .ritratto{width:232px;height:232px}
+  .ritratto-fondo{inset:6px}
+  .ritratto .ph{width:200px;height:200px;font-size:12px}
+  .socio h3{font-size:24px;letter-spacing:-.02em}
+  .ruolo{font-size:14px;margin-top:4px}
+  .team-foto{height:520px;font-size:15px}   /* 520 (prima 360): si vede anche il petto, deciso da Gabriele il 12/11 */
+
+  /* recensioni */
+  .recensioni{display:block;padding:96px 0}
+  .rec-testa{flex-direction:row;justify-content:space-between;align-items:flex-end;gap:32px;flex-wrap:wrap;padding-bottom:40px}
+  .rec-voto{gap:16px}
+  .rec-numero{font-size:64px}
+  .rec-voto .stars svg{width:18px;height:18px}
+  .rec-nastri{gap:16px}
+  .mq{animation-duration:40s}
+  .mqr{animation-duration:46s}
+  .mq:hover,.mqr:hover{animation-play-state:paused}
+  .rec{width:380px;margin-right:16px;padding:22px;gap:10px}
+  .rec-testo{font-size:15px;line-height:1.55}
+  .rec-chi{font-size:12.5px}
+
+  /* faq */
+  .faq{padding:96px 0}
+  .faq-griglia{display:grid;grid-template-columns:1fr 1.6fr;gap:48px;align-items:start;padding-top:100px}
+  .faq-intro{gap:14px;padding-top:0;margin-bottom:0}
+  .faq .h2{font-size:40px}
+  .faq-lista{gap:12px}
+  .faq-voce{padding:22px 30px;transition:transform .25s,box-shadow .25s}
+  .faq-voce:not([open]):hover{transform:translateY(-6px);box-shadow:var(--ombra-hov)}
+  .faq-voce[open]{padding:26px 30px}
+  .faq-voce summary{gap:16px}
+  .faq-voce h3{font-size:19px;gap:16px}
+  .faq-num{font-size:36px;-webkit-text-stroke-width:1.5px}
+  .faq-icona{width:40px;height:40px}
+  .faq-icona svg{width:16px;height:16px}
+  .faq-voce p{font-size:15px;line-height:1.6;margin-top:12px;padding-left:62px}
+
+  /* contatti */
+  .mappa{height:680px;--mappa-su:250px}
+  .contatti-scheda{position:absolute;left:max(48px,calc((100% - 1280px) / 2));top:72px;width:460px;margin:0;padding:36px;gap:22px;font-size:15px}
+  .aperto{padding:5px 10px;font-size:11px}
+  .contatti .h2{font-size:36px}
+  .contatti-indirizzo{font-size:15px}
+  .orari{gap:6px;padding-top:18px}
+  .orari div{font-size:14px}
+
+  .footer{padding:48px 0 24px}
+  .footer-griglia{flex-direction:row;justify-content:space-between;align-items:flex-start;gap:48px}
+  .footer-basso{flex-direction:row;justify-content:space-between;gap:24px;margin-top:32px}
+}
+
+/* Navbar fra 1024 e 1199: con sei voci lo spazio fra una e l'altra scende da 32 a 20 px, se no la navbar sborda (12/11, da confermare) */
+@media (min-width:1024px) and (max-width:1199.98px){
+  .nav-link{gap:20px}
+}
+
+/* Strumentazione affiancata: orbita a sinistra, scheda a destra (sotto i 1200 non c'è posto) */
+@media (min-width:1200px){
+  .strum-griglia{display:grid;grid-template-columns:1fr 420px}
+}
+
+/* ═══ Movimento ridotto ═══ */
+@media (prefers-reduced-motion:reduce){
+  .pulse,.halo,.mq,.mqr{animation:none}
+  .btn svg,.zoom,.hov,.rrow,.rrow .ico,.pan,.pph,.pvt,.pcard,.pdots span,.dots-nav [data-dot],.studio-fig,.faq-voce{transition:none}
+  .pan.open .pph,.zoomwrap:hover .zoom{transform:none}
+  .pan.open .pcard{transition-delay:0s}
+  /* i nastri si scorrono a mano */
+  .rec-binario{overflow-x:auto}
+}
+@media (prefers-reduced-motion:reduce) and (min-width:1024px){
+  .studio-binario{overflow-x:auto}
+}
+
+/* ═══ Solo desktop / solo mobile (in fondo: vincono sui display dei componenti) ═══ */
+@media (max-width:1023.98px){.solo-d{display:none}}
+@media (min-width:1024px){.solo-m{display:none}}
