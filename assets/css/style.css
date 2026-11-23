@@ -143,15 +143,16 @@ model-viewer{background:transparent;--poster-color:transparent}
 .modello-3d model-viewer{width:170px;height:170px}
 
 /* ═══ Navbar (voci e menu si sistemano al passo 17). Fissa in alto mentre si scorre, fondo bianco pieno ═══ */
-.nav{background:var(--bianco);width:100%;height:var(--nav-h);padding:0 16px 0 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid var(--menta);position:sticky;top:0;z-index:10}
+/* --stretta: quanti pixel mancano ai 380 che servono alla barra; sotto quella larghezza spazi e logo si riducono in proporzione */
+.nav{--stretta:clamp(0px,380px - 100vw,60px);background:var(--bianco);width:100%;height:var(--nav-h);padding:0 calc(16px - var(--stretta)*.1) 0 calc(20px - var(--stretta)*.1);display:flex;align-items:center;justify-content:space-between;gap:calc(12px - var(--stretta)*.1);border-bottom:1px solid var(--menta);position:sticky;top:0;z-index:10}
 /* barra di avanzamento della pagina (13/11): come nel sito di prova di Francesco, ma subito sotto la navbar */
 .avanzamento{position:fixed;top:var(--nav-h);left:0;right:0;height:2.5px;background:var(--cta);transform:scaleX(0);transform-origin:left;z-index:11;pointer-events:none}
 .nav-logo{display:flex;align-items:center;gap:8px}
 /* logo vero: alto 32 px, 38 su desktop (non si ingrandisce: deciso il 12/11) */
-.nav-logo-img{height:32px;width:auto;display:block}
+.nav-logo-img{height:calc(32px - var(--stretta)*.14);width:auto;display:block}
 .nav-link{display:flex;align-items:center;gap:32px;font-size:15px;font-weight:500;color:var(--verde)}
-.nav-azioni{display:flex;align-items:center;gap:8px}
-.nav-cta{height:38px;padding:0 14px;font-size:13px}
+.nav-azioni{display:flex;align-items:center;gap:calc(8px - var(--stretta)*.05)}
+.nav-cta{height:38px;padding:0 calc(14px - var(--stretta)*.1);font-size:13px}
 /* menu del telefono (13/11): pannello bianco che scende sotto la navbar */
 .nav-mobile{position:absolute;top:100%;left:0;right:0;background:var(--bianco);border-bottom:1px solid var(--menta);box-shadow:var(--ombra-lift);padding:4px var(--gutter) 12px;display:flex;flex-direction:column}
 .nav-mobile[hidden]{display:none}
@@ -170,6 +171,8 @@ model-viewer{background:transparent;--poster-color:transparent}
 .hero-titolo{font-family:var(--font-titoli);font-size:42px;font-weight:800;line-height:1.02;letter-spacing:-.03em;color:var(--bianco)}
 .hero-sotto{font-size:16px;line-height:1.55;color:var(--menta);font-weight:300}
 .hero-cta{display:flex;flex-direction:column;gap:10px}
+/* sotto i 392 px il testo del bottone rosso non sta su una riga: il carattere dei due bottoni si riduce con lo schermo */
+.hero-cta .btn{font-size:clamp(12px,(100vw - 96px)*.0507,15px)}
 .hero-numeri{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;border-top:1px solid var(--verde-medio);padding-top:18px}
 .hero-numeri div{display:flex;flex-direction:column;gap:3px}
 .hero-numeri strong{font-family:var(--font-titoli);font-size:22px;font-weight:800;line-height:1;display:inline-flex;align-items:center;gap:4px}
