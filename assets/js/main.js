@@ -254,6 +254,15 @@
     var schede = arr(root.querySelectorAll('[data-scheda]'));
     var nome = root.querySelector('[data-modello-nome]');
     var modello = root.querySelector('[data-modello-macchina]');
+    /* ogni macchinario riparte dal davanti, con la vista scritta in camera-orbit (25/11, chiesto da Gabriele) */
+    var vista = modello && modello.getAttribute('camera-orbit');
+    function davanti() {
+      if (!modello || !modello.resetTurntableRotation) return;
+      modello.resetTurntableRotation(0);
+      modello.cameraOrbit = vista;
+      modello.jumpCameraToGoal();
+    }
+    if (modello) modello.addEventListener('load', davanti);
     bottoni.forEach(function (b) {
       b.addEventListener('click', function () {
         var k = b.getAttribute('data-macchina'), testo = b.textContent.trim(), file = null;
@@ -266,8 +275,8 @@
         /* il modello 3D si carica solo adesso, al tocco: il file è scritto sulla scheda (data-modello) */
         if (modello && file && modello.getAttribute('src') !== file) {
           modello.setAttribute('src', file);
-          modello.setAttribute('alt', 'Modello 3D di ' + testo + ': trascina per ruotarlo');
-        }
+          modello.setAttribute('alt', 'Modello 3D, ' + testo + ': trascina per ruotarlo');
+        } else davanti();
       });
     });
   })();
@@ -346,11 +355,17 @@
     if (dMq.addEventListener) dMq.addEventListener('change', chiudi); else dMq.addListener(chiudi);
   })();
 
-  /* ─── Mappa: sul desktop parte spostata, col pin a destra della scheda dei contatti (13/11).
-     L'iframe è lazy: qui non si è ancora caricato, si cambia solo l'indirizzo ─── */
+  /* ─── Mappa di Google (25/11): parte solo al clic sull'immagine. La scelta non si salva: a ogni pagina si riparte dall'immagine.
+     Sul desktop l'indirizzo è quello spostato, col pin a destra della scheda dei contatti ─── */
   (function () {
-    var m = document.querySelector('[data-mappa-desktop]');
-    if (m && desktopMq.matches) m.src = m.getAttribute('data-mappa-desktop');
+    var mappa = document.querySelector('[data-mappa]'); if (!mappa) return;
+    var frame = mappa.querySelector('iframe');
+    mappa.querySelector('[data-mappa-mostra]').addEventListener('click', function () {
+      frame.hidden = false;
+      mappa.querySelector('[data-mappa-ferma]').hidden = true;
+      frame.src = frame.getAttribute(desktopMq.matches ? 'data-src-desktop' : 'data-src');
+      frame.focus();
+    });
   })();
 
   /* ─── Barra di avanzamento della pagina (13/11): come nel sito di prova di Francesco, molla stiffness 100, damping 30;

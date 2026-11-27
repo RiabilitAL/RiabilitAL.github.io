@@ -113,7 +113,11 @@ img.pph,.pt img.ph{height:100%;padding:0}
 
 /* parole grandi di sfondo, in contorno */
 .ghost{font-family:var(--font-titoli);font-weight:900;letter-spacing:-.04em;color:transparent;-webkit-text-stroke:1px var(--menta);pointer-events:none;user-select:none;line-height:1}
-.ghost-sez{position:absolute;left:14px;top:14px;font-size:96px;letter-spacing:-.05em;white-space:nowrap}
+/* la scritta si vede sempre intera: --em è la sua larghezza in em, il carattere scende con lo schermo (24/11, chiesto da Gabriele) */
+.ghost-sez{--em:3.6;position:absolute;left:14px;top:14px;font-size:min(96px,calc((100vw - 28px) / var(--em)));letter-spacing:-.05em;white-space:nowrap}
+.ghost-fisio{--em:6.35}
+.ghost-strum{--em:5.3}
+.ghost-riab{--em:7.2}
 
 .dots{background-image:radial-gradient(var(--verde-medio) 1.2px,transparent 1.6px);background-size:22px 22px}
 
@@ -152,7 +156,7 @@ model-viewer{background:transparent;--poster-color:transparent}
 .nav-logo-img{height:calc(32px - var(--stretta)*.14);width:auto;display:block}
 .nav-link{display:flex;align-items:center;gap:32px;font-size:15px;font-weight:500;color:var(--verde)}
 .nav-azioni{display:flex;align-items:center;gap:calc(8px - var(--stretta)*.05)}
-.nav-cta{height:38px;padding:0 calc(14px - var(--stretta)*.1);font-size:13px}
+.nav-cta{height:38px;padding:0 calc(14px - var(--stretta)*.13);font-size:calc(13px - var(--stretta)*.04)}
 /* menu del telefono (13/11): pannello bianco che scende sotto la navbar */
 .nav-mobile{position:absolute;top:100%;left:0;right:0;background:var(--bianco);border-bottom:1px solid var(--menta);box-shadow:var(--ombra-lift);padding:4px var(--gutter) 12px;display:flex;flex-direction:column}
 .nav-mobile[hidden]{display:none}
@@ -173,6 +177,9 @@ model-viewer{background:transparent;--poster-color:transparent}
 .hero-cta{display:flex;flex-direction:column;gap:10px}
 /* sotto i 392 px il testo del bottone rosso non sta su una riga: il carattere dei due bottoni si riduce con lo schermo */
 .hero-cta .btn{font-size:clamp(12px,(100vw - 96px)*.0507,15px)}
+/* bottone con la frase intera della valutazione gratuita: dove non sta su una riga va a capo (24/11) */
+.btn-lungo{height:auto;min-height:52px;padding-top:12px;padding-bottom:12px;white-space:normal;text-wrap:balance;text-align:center;line-height:1.25}
+.btn-lungo svg{flex:none}
 .hero-numeri{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;border-top:1px solid var(--verde-medio);padding-top:18px}
 .hero-numeri div{display:flex;flex-direction:column;gap:3px}
 .hero-numeri strong{font-family:var(--font-titoli);font-size:22px;font-weight:800;line-height:1;display:inline-flex;align-items:center;gap:4px}
@@ -275,10 +282,8 @@ model-viewer{background:transparent;--poster-color:transparent}
 .rrow p{font-size:12.5px;line-height:1.45;color:var(--grigio)}
 .riab-cta{width:100%}
 /* desktop: pannelli e foto grandi */
-.riab-desktop{display:flex;flex-direction:column;gap:48px}
+.riab-desktop{display:flex;flex-direction:column;gap:24px}
 .riab-gruppo{display:flex;flex-direction:column;gap:18px}
-.riab-etichetta{display:flex;align-items:center;gap:16px}
-.riab-linea{flex:1;height:1px;background:var(--menta)}
 .pans{display:flex;gap:12px;align-items:stretch}
 .pan{position:relative;min-width:0;height:460px;border-radius:var(--r-tessera);overflow:hidden;background:var(--menta);display:block;color:var(--bianco);flex:1 1 0;transition:flex-grow .9s cubic-bezier(.2,.8,.2,1)}
 .pan.open{flex-grow:3}
@@ -391,6 +396,15 @@ model-viewer{background:transparent;--poster-color:transparent}
 .mappa{position:relative;background:var(--menta);height:260px;border-radius:var(--r-sezione) var(--r-sezione) 0 0;overflow:hidden;--mappa-su:70px}
 /* la mappa sale oltre il bordo alto della sezione di --mappa-su: così il riquadro di Google in alto a sinistra (nome, indirizzo, "Apri in Maps") resta fuori vista. Logo e scritte di Google in basso restano visibili (12/11) */
 .mappa-frame{position:absolute;left:0;right:0;bottom:0;top:calc(-1 * var(--mappa-su));width:100%;height:calc(100% + var(--mappa-su));border:0;display:block}
+/* mappa ferma (25/11): immagine mai ridimensionata, così al clic l'inquadratura resta quella; [hidden] va ripetuto perché display:block vince sull'attributo */
+.mappa-frame[hidden],.mappa-ferma[hidden]{display:none}
+.mappa-ferma{position:absolute;inset:0}
+.mappa-immagine{--largo:1024px;position:absolute;inset:0;width:100%;padding:0;border:0;overflow:hidden;background:transparent;cursor:pointer}
+.mappa-immagine:focus-visible{outline-offset:-4px}
+.mappa-immagine img{position:absolute;top:0;left:calc(50% - var(--largo) / 2);width:var(--largo);height:100%;max-width:none}
+.mappa-immagine .btn{position:absolute;left:12px;bottom:72px;height:34px;padding:0 16px;font-size:13px}
+.mappa-ferma p{position:absolute;left:0;right:0;bottom:40px;padding:2px 6px;background:rgba(255,255,255,.85);font-size:9px;line-height:1.4}
+.mappa-ferma p a{text-decoration:underline}
 .contatti-scheda{position:relative;margin:-40px var(--gutter) 40px;padding:24px 20px;display:flex;flex-direction:column;gap:16px;color:var(--verde)}
 .contatti-testa{display:flex;justify-content:space-between;align-items:center}
 .aperto{padding:4px 9px;font-size:10px}
@@ -418,7 +432,17 @@ model-viewer{background:transparent;--poster-color:transparent}
 .footer-contatti{font-style:normal;display:flex;flex-direction:column;gap:6px}
 .footer-orari{margin-top:6px}
 .footer-basso{display:flex;flex-direction:column;gap:8px;margin-top:28px;padding-top:16px;border-top:1px solid var(--verde-medio);font-size:12.5px}
-.footer-link-bassi{display:flex;gap:20px}
+.footer-link-bassi{display:flex;flex-wrap:wrap;align-items:center;gap:4px 20px}
+.footer-firma{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.footer-firma img{height:20px;width:auto;display:block}
+
+/* ═══ Privacy e cookie policy (25/11) ═══ */
+.legale{padding:40px 0 56px}
+.legale .wrap>*{max-width:760px}
+.legale h1{font-size:var(--h2);font-weight:800;letter-spacing:-.025em;line-height:1.06}
+.legale h2{font-size:19px;margin-top:28px}
+.legale p{margin-top:8px;font-size:15px;line-height:1.6;color:var(--grigio)}
+.legale p a{color:var(--verde);text-decoration:underline}
 
 /* ═══ 768–1023: tavola mobile con i margini del desktop ═══ */
 @media (min-width:768px){
@@ -442,7 +466,7 @@ model-viewer{background:transparent;--poster-color:transparent}
   .lead{font-size:17px;line-height:1.6}
   .ico{width:44px;height:44px}
   .ico svg{width:22px;height:22px}
-  .ghost-sez{left:48px;top:30px;font-size:200px}
+  .ghost-sez{left:48px;top:30px;font-size:min(200px,calc((100vw - 112px) / var(--em)))}
   .dots{background-size:24px 24px}
   .hov{transition:transform .25s,box-shadow .25s}
   .hov:hover{transform:translateY(-6px);box-shadow:var(--ombra-hov)}
@@ -455,7 +479,7 @@ model-viewer{background:transparent;--poster-color:transparent}
   .nav{padding:0 48px;gap:32px}
   .nav-logo{gap:10px}
   .nav-logo-img{height:38px}
-  .nav-cta{height:46px;padding:0 22px;font-size:14px}
+  .nav-cta{height:46px;padding:0 clamp(13px,calc((100vw - 985px)*.35),22px);font-size:14px}
 
   /* hero */
   .hero-griglia{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(520px,100%),1fr));gap:48px;align-items:center;padding-top:72px;padding-bottom:72px;min-height:740px}
@@ -588,6 +612,9 @@ model-viewer{background:transparent;--poster-color:transparent}
 
   /* contatti */
   .mappa{height:680px;--mappa-su:250px}
+  .mappa-immagine{--largo:1920px}
+  .mappa-immagine .btn{left:calc(50% + 210px);top:390px;bottom:auto;transform:translateX(-50%)}
+  .mappa-ferma p{bottom:0;text-align:right}
   .contatti-scheda{position:absolute;left:max(48px,calc((100% - 1280px) / 2));top:72px;width:460px;margin:0;padding:36px;gap:22px;font-size:15px}
   .aperto{padding:5px 10px;font-size:11px}
   .contatti .h2{font-size:36px}
@@ -596,8 +623,14 @@ model-viewer{background:transparent;--poster-color:transparent}
   .orari div{font-size:14px}
 
   .footer{padding:48px 0 24px}
+  .legale{padding:72px 0 96px}
   .footer-griglia{flex-direction:row;justify-content:space-between;align-items:flex-start;gap:48px}
   .footer-basso{flex-direction:row;justify-content:space-between;gap:24px;margin-top:32px}
+}
+
+/* schermi oltre 1920: immagine della mappa più larga (25/11) */
+@media (min-width:1921px){
+  .mappa-immagine{--largo:3440px}
 }
 
 /* Navbar fra 1024 e 1199: con sei voci lo spazio fra una e l'altra scende da 32 a 20 px, se no la navbar sborda (12/11, da confermare) */
